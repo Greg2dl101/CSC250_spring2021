@@ -17,7 +17,7 @@ struct file
 
 //function prototypes
 void printAll(struct file files[], int end);
-void printIndex(struct file files[]);
+void printIndex(struct file files[], int end);
 void printOut(struct file files[], int end);
 void addRecord(struct file files[], int end);
 
@@ -43,14 +43,6 @@ int main()
   int i = 0;
   int end = 0;
 
-  /*
-  while(fscanf(ifp, "%s %s %s %s", files[i].cve, files[i].cvss, files[i].date, files[i].software) != EOF)
-  {
-    i++;
-    end++;
-  }
-  */
-
   //process user's selection, oops until exit is selected
   do
   {
@@ -60,11 +52,11 @@ int main()
       end++;
     }
 
-    //user menu
-    printf("1.) Print All\n");
-    printf("2.) Print Index\n");
-    printf("3.) Add Record\n");
-    printf("4.) Exit\n");
+    //menu
+    printf("1. Print All\n");
+    printf("2. Print Index\n");
+    printf("3. Add Record\n");
+    printf("4. Exit\n");
     scanf("%d", &userChoice);
 
     switch (userChoice)
@@ -76,7 +68,7 @@ int main()
 
       case 2:
       //call function that prints individual record
-      printIndex(files);
+      printIndex(files, end);
       break;
 
       case 3:
@@ -85,6 +77,9 @@ int main()
 
       //calls function that adds record
       addRecord(files, end);
+
+      //calls function that saves chages to file
+      printOut(files, end);
 
       //reopens file in read only mode
       FILE *ifp = fopen("nvdcve.dat", "r");
@@ -97,12 +92,13 @@ int main()
       }
     }
 
-
-
   } while(userChoice != 4);
 
   //close file
   fclose(ifp);
+
+  //calls function that saves chages to file
+  //printOut(files, end);
 
   return 0;
 }
@@ -120,17 +116,35 @@ void printAll(struct file files[], int end)
 }//end of printAll
 
 //function that prints based on index value
-void printIndex(struct file files[])
+void printIndex(struct file files[], int end)
 {
+  //variable to store user input
   int record;
 
-  //prompts user
-  printf("Which record would you like to print? ");
-  scanf("%d", &record);
+  //control loop to ensure valid entries from user
+  do
+  {
+    //prompts user
+    printf("Which record would you like to print? ");
+    scanf("%d", &record);
 
-  printf("%s %s %s %s\n", files[record].cve, files[record].cvss, files[record].date, files[record].software);
+    printf("%s %s %s %s\n", files[record].cve, files[record].cvss, files[record].date, files[record].software);
+
+  } while(record < 0 || record > end);
 
 }//end of printIndex
+
+void printOut(struct file files[], int end)
+{
+  FILE *ifp = fopen("nvdcve.dat", "w");
+
+  for(int i = 0; i <= end; i++)
+  {
+    fprintf(ifp, "%s %s %s %s\n", files[i].cve, files[i].cvss, files[i].date, files[i].software);
+  }
+  //close file pointer
+  fclose(ifp);
+}
 
 //function that opens file in write mode to add new record
 void addRecord(struct file files[], int end)

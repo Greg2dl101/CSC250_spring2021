@@ -28,6 +28,9 @@ int main()
   //file pointer
   FILE *ifp = fopen("nvdcve.dat", "r");
 
+  //declare variable for array of structs
+  struct file files[100];
+
   //declare variables
   unsigned int userChoice;//for user's menu choice
 
@@ -38,14 +41,13 @@ int main()
     exit(1);
   }
 
-  //declare variable for array of structs
-  struct file files[100];
-  int i = 0;
-  int end = 0;
-
-  //process user's selection, oops until exit is selected
+  //process user's selection, loops until exit is selected
   do
   {
+    int i = 0;
+    int end = 0;
+
+    //adds data from file to struct array
     while(fscanf(ifp, "%s %s %s %s", files[i].cve, files[i].cvss, files[i].date, files[i].software) != EOF)
     {
       i++;
@@ -58,6 +60,7 @@ int main()
     printf("3. Add Record\n");
     printf("4. Exit\n");
     scanf("%d", &userChoice);
+    getchar();//clear input buffer
 
     switch (userChoice)
     {
@@ -78,10 +81,7 @@ int main()
       //calls function that adds record
       addRecord(files, end);
 
-      //calls function that saves chages to file
-      printOut(files, end);
-
-      //reopens file in read only mode
+      //file pointer
       FILE *ifp = fopen("nvdcve.dat", "r");
 
       //check for successful open
@@ -90,15 +90,13 @@ int main()
         printf("Unable to open file!\n");
         exit(1);
       }
+
     }
 
   } while(userChoice != 4);
 
   //close file
   fclose(ifp);
-
-  //calls function that saves chages to file
-  //printOut(files, end);
 
   return 0;
 }
@@ -108,8 +106,16 @@ void printAll(struct file files[], int end)
 {
   for(int i = 0; i < end; i++)
   {
-    printf("%s %s %s %s\n", files[i].cve, files[i].cvss, files[i].date, files[i].software);
+    //printf("%s %s %s %s\n", files[i].cve, files[i].cvss, //files[i].date, files[i].software);
+
+    printf("****************************************\n");
+    printf("*%3d.%8s: %-12s\n", i, "CVE", files[i].cve);
+    printf("*%12s: %-12s\n", "CVSS",files[i].cvss);
+    printf("*%12s: %-12s\n", "Date",files[i].date);
+    printf("*%12s: %-12s\n", "Software",files[i].software);
+    printf("****************************************\n");
   }
+
   //puts whitespace after loop
   puts("");
 
@@ -128,42 +134,41 @@ void printIndex(struct file files[], int end)
     printf("Which record would you like to print? ");
     scanf("%d", &record);
 
-    printf("%s %s %s %s\n", files[record].cve, files[record].cvss, files[record].date, files[record].software);
+    //prints record at the index user selects
+    printf("****************************************\n");
+    printf("*%3d.%8s: %-12s\n", record, "CVE", files[record].cve);
+    printf("*%12s: %-12s\n", "CVSS",files[record].cvss);
+    printf("*%12s: %-12s\n", "Date",files[record].date);
+    printf("*%12s: %-12s\n", "Software",files[record].software);
+    printf("****************************************\n");
 
-  } while(record < 0 || record > end);
+  } while(record < 0 && record > end);
+
+  //puts whitespace after loop
+  puts("");
 
 }//end of printIndex
-
-void printOut(struct file files[], int end)
-{
-  FILE *ifp = fopen("nvdcve.dat", "w");
-
-  for(int i = 0; i <= end; i++)
-  {
-    fprintf(ifp, "%s %s %s %s\n", files[i].cve, files[i].cvss, files[i].date, files[i].software);
-  }
-  //close file pointer
-  fclose(ifp);
-}
 
 //function that opens file in write mode to add new record
 void addRecord(struct file files[], int end)
 {
+  //charaacter array to sotore new data
+  char newRecord[100];
+
+  //print prompts for user input and stores in array
+  printf("Enter CVE, CVSS, Date & Software:");
+  fgets(newRecord, 100, stdin);
+  newRecord[strcspn(newRecord, "\n")] = 0; //clear newline
+
   //opens file in write mode and created pointer
-  FILE *ifp = fopen("nvdcve.dat", "w");
+  FILE *ifp = fopen("nvdcve.dat", "a");
 
-  //prompts and stores user input
-  printf("     CVE: ");
-  scanf("%s", files[end].cve);
-  printf("    CVSS: ");
-  scanf("%s", files[end].cvss);
-  printf("    DATE: ");
-  scanf("%s", files[end].date);
-  printf("SOFTWARE: ");
-  scanf("%s", files[end].software);
+  //prints string to file
+  fprintf(ifp, "%s\n", newRecord);
 
-  fprintf(ifp, "%s %s %s %s\n", files[end].cve, files[end].cvss, files[end].date, files[end].software);
+  rewind(ifp);
 
   //close file pointer
   fclose(ifp);
-}
+
+}//end of addRecord

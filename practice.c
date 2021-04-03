@@ -16,6 +16,7 @@ struct file
 
 
 //function prototypes
+void fileCheck(FILE *ifp);
 void printAll(struct file files[], int end);
 void printIndex(struct file files[], int end);
 void printOut(struct file files[], int end);
@@ -28,24 +29,25 @@ int main()
   //file pointer
   FILE *ifp = fopen("nvdcve.dat", "r");
 
-  //declare variable for array of structs
-  struct file files[100];
+  int i, end;
 
   //declare variables
   unsigned int userChoice;//for user's menu choice
 
-  //check for successful open
-  if(ifp == NULL)
-  {
-    printf("Unable to open file!\n");
-    exit(1);
-  }
+  //declare variable for array of structs
+  struct file files[100];
+
+  //calls function that checks if file was opened successfully
+  fileCheck(ifp);
 
   //process user's selection, loops until exit is selected
   do
   {
-    int i = 0;
-    int end = 0;
+    //places cursor at beginning of file
+    rewind(ifp);
+
+    i = 0;
+    end = 0;
 
     //adds data from file to struct array
     while(fscanf(ifp, "%s %s %s %s", files[i].cve, files[i].cvss, files[i].date, files[i].software) != EOF)
@@ -84,12 +86,8 @@ int main()
       //file pointer
       FILE *ifp = fopen("nvdcve.dat", "r");
 
-      //check for successful open
-      if(ifp == NULL)
-      {
-        printf("Unable to open file!\n");
-        exit(1);
-      }
+      //calls function that checks if file was opened successfully
+      fileCheck(ifp);
 
     }
 
@@ -101,13 +99,23 @@ int main()
   return 0;
 }
 
+//function that checks o see if file was successfuly opened
+void fileCheck(FILE *ifp)
+{
+  //checks if file was opene
+  if(ifp == NULL)
+  {
+    printf("Unable to open file!\n");
+    exit(1);
+  }
+
+}//end of fileCheck
+
 //function that prints out all records
 void printAll(struct file files[], int end)
 {
   for(int i = 0; i < end; i++)
   {
-    //printf("%s %s %s %s\n", files[i].cve, files[i].cvss, //files[i].date, files[i].software);
-
     printf("****************************************\n");
     printf("*%3d.%8s: %-12s\n", i, "CVE", files[i].cve);
     printf("*%12s: %-12s\n", "CVSS",files[i].cvss);
@@ -127,22 +135,22 @@ void printIndex(struct file files[], int end)
   //variable to store user input
   int record;
 
-  //control loop to ensure valid entries from user
+  //controll loop to check for valid entries
   do
   {
     //prompts user
     printf("Which record would you like to print? ");
     scanf("%d", &record);
 
-    //prints record at the index user selects
-    printf("****************************************\n");
-    printf("*%3d.%8s: %-12s\n", record, "CVE", files[record].cve);
-    printf("*%12s: %-12s\n", "CVSS",files[record].cvss);
-    printf("*%12s: %-12s\n", "Date",files[record].date);
-    printf("*%12s: %-12s\n", "Software",files[record].software);
-    printf("****************************************\n");
+  }while (record < 0 || record > end);
 
-  } while(record < 0 && record > end);
+  //prints record at the index user selects
+  printf("****************************************\n");
+  printf("*%3d.%8s: %-12s\n", record, "CVE", files[record].cve);
+  printf("*%12s: %-12s\n", "CVSS",files[record].cvss);
+  printf("*%12s: %-12s\n", "Date",files[record].date);
+  printf("*%12s: %-12s\n", "Software",files[record].software);
+  printf("****************************************\n");
 
   //puts whitespace after loop
   puts("");
@@ -156,17 +164,18 @@ void addRecord(struct file files[], int end)
   char newRecord[100];
 
   //print prompts for user input and stores in array
-  printf("Enter CVE, CVSS, Date & Software:");
+  printf("Enter CVE, CVSS, Date & Software:\n");
   fgets(newRecord, 100, stdin);
   newRecord[strcspn(newRecord, "\n")] = 0; //clear newline
 
   //opens file in write mode and created pointer
   FILE *ifp = fopen("nvdcve.dat", "a");
 
+  //calls function that checks if file was opened successfully
+  fileCheck(ifp);
+
   //prints string to file
   fprintf(ifp, "%s\n", newRecord);
-
-  rewind(ifp);
 
   //close file pointer
   fclose(ifp);

@@ -19,17 +19,13 @@ struct file
 void fileCheck(FILE *ifp);
 void printAll(struct file files[], int end);
 void printIndex(struct file files[], int end);
-void printOut(struct file files[], int end);
 void addRecord(struct file files[], int end);
-
 
 //main function
 int main()
 {
   //file pointer
   FILE *ifp = fopen("nvdcve.dat", "r");
-
-  int i, end;
 
   //declare variables
   unsigned int userChoice;//for user's menu choice
@@ -46,8 +42,9 @@ int main()
     //places cursor at beginning of file
     rewind(ifp);
 
-    i = 0;
-    end = 0;
+    //variables to use with while loop that stores file data insto struct
+    int i = 0;
+    int end = 0;
 
     //adds data from file to struct array
     while(fscanf(ifp, "%s %s %s %s", files[i].cve, files[i].cvss, files[i].date, files[i].software) != EOF)
@@ -64,6 +61,7 @@ int main()
     scanf("%d", &userChoice);
     getchar();//clear input buffer
 
+    //runs functions based on user's inuput
     switch (userChoice)
     {
       case 1:
@@ -83,8 +81,8 @@ int main()
       //calls function that adds record
       addRecord(files, end);
 
-      //file pointer
-      FILE *ifp = fopen("nvdcve.dat", "r");
+      //opens file pointer in read mode
+      ifp = fopen("nvdcve.dat", "r");
 
       //calls function that checks if file was opened successfully
       fileCheck(ifp);
@@ -111,9 +109,10 @@ void fileCheck(FILE *ifp)
 
 }//end of fileCheck
 
-//function that prints out all records
+//function that prints out all records stored in struct
 void printAll(struct file files[], int end)
 {
+  //prints all records stores in struct
   for(int i = 0; i < end; i++)
   {
     printf("****************************************\n");

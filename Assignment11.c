@@ -1,8 +1,6 @@
-//accept user input and store into 10 variables
-//create linked list
-//create function that prints linked list
-//create function that reverses linked list
-//print reversed linked list
+//This is my submission for Assignment 11.
+//This is a program that generates a linked list base on user-input and reverses
+//that string. 
 
 
 #include <stdio.h>
@@ -103,6 +101,6 @@ int main()
   //calls function that prints reversed list
   printList(head);
 
-  //returns 0 of program successfully executed. 
+  //returns 0 of program successfully executed.
   return 0;
 }//end of main

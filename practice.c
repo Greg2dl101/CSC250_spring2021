@@ -56,14 +56,14 @@ int main(int argc, char *argv[])
   //checks for amount of arguments
   if (argc != 2)
   {
-    printf("Not enough arguments!\n");
+    printf("Invalid entry! Please run program with file.txt\n");
     exit(1);
   }
 
-  //checks if second argument it appropriate .txt file
+  //checks if second argument in command line is appropriate .txt file
   if (strcmp(argv[1], "file.txt") != 0)
   {
-    printf("Invaled entry!\n");
+    printf("Invaled entry! Please use with file.txt!\n");
     exit(1);
   }
 

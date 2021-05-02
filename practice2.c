@@ -103,6 +103,6 @@ int main()
   //calls function that prints reversed list
   printList(head);
 
-  //returns 0 of program successfully executed. 
+  //returns 0 of program successfully executed.
   return 0;
 }//end of main

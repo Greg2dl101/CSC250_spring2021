@@ -1,44 +1,8 @@
-/*
-In this assignment, you'll be creating a program that reads in several numbers from a file defined via command line argument then calculates the sum, min, max, and then finally sorts the numbers before printing. You may use the sorts we discussed in class or those defined elsewhere but I do ask that you compose your own code for all components (including the sort) and do not copy direct code segments or snippets from online sources or other students.
+//Programmer: Gregory Lane
 
-Your program should provide basic error messaging when a user tries to open a file that doesn't exist.
-Example input file:
-4
-55
-1
-98
--1
-34
-
-Example output on stdout:
-./a.out in.txt
-Min: -1
-Max: 98
-Sum: 191
-Sorted:
--1 1 4 34 55 98
-
-Example output on stdout with incorrect argument count:
-./a.out
-Format: ./a.out <filename>
-or
-./a.out a b c
-Format: ./a.out <filename>
-
-Example output on stdout with file that doesn't exist:
-./a.out notafile.txt
-Unable to open file
-*/
-
-//1. create .txt file which numbers
-//2. read numbers from .txt file
-//3. create error checking to ensure proper file was opened
-//4. store numbers into array
-//5. sort numbers to find min
-//6. sort numbers to find max
-//7. add numbers to find sum
-//8. sort numbers from east to greatest
-///////////////////////////////////////////////////////////////////////////////
+//This is my submission for assignment 12 for CSC250-DT5-SP2021, a program that
+//takes takes up to 100 integers from a .txt file, finds the min, max, Sum
+//of those numbers and sorts them into ascending order.
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -51,6 +15,7 @@ void findSum(int end, int nums[]);
 void sortArray(int end, int nums[]);
 void printArray(int end, int nums[]);
 
+//main function included in all programs
 int main(int argc, char *argv[])
 {
   //checks for amount of arguments
@@ -60,7 +25,7 @@ int main(int argc, char *argv[])
     exit(1);
   }
 
-  //checks if second argument it appropriate .txt file
+  //checks if second argument is appropriate .txt file
   if (strcmp(argv[1], "file.txt") != 0)
   {
     printf("Invaled entry!\n");

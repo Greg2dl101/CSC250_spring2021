@@ -51,6 +51,7 @@ void findSum(int end, int nums[]);
 void sortArray(int end, int nums[]);
 void printArray(int end, int nums[]);
 
+//main function to incluse in all C prgrams
 int main(int argc, char *argv[])
 {
   //checks for amount of arguments
@@ -111,7 +112,7 @@ int main(int argc, char *argv[])
 void findMin(int end, int nums[])
 {
 
-  int min = nums[0];
+  int min = nums[0];//declare and initialize min var
 
   for (int i = 0; i < end; i++)
   {
@@ -128,7 +129,7 @@ void findMin(int end, int nums[])
 //function that finds largest number in array and prints number
 void findMax(int end, int nums[])
 {
-  int max = nums[0];
+  int max = nums[0];//declare and initialize max var
 
   for (int i = 0; i < end; i++)
   {

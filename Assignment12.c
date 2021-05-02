@@ -1,9 +1,9 @@
-//Programmer: Gregory Lane
+//This is Gregory Lane's submission for Assignment 12, CSC250-DT5, SP2021.
+//This is a program that takes integers from a .txt file, stores them into an 
+//array; finds the min, max and sum of those elements; then sorts the element
+//values into ascending order.
 
-//This is my submission for assignment 12 for CSC250-DT5-SP2021, a program that
-//takes takes up to 100 integers from a .txt file, finds the min, max, Sum
-//of those numbers and sorts them into ascending order.
-
+//libraries to be used in program
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -15,20 +15,20 @@ void findSum(int end, int nums[]);
 void sortArray(int end, int nums[]);
 void printArray(int end, int nums[]);
 
-//main function included in all programs
+//main function to incluse in all C prgrams
 int main(int argc, char *argv[])
 {
   //checks for amount of arguments
   if (argc != 2)
   {
-    printf("Not enough arguments!\n");
+    printf("Invalid entry! Please run program with file.txt\n");
     exit(1);
   }
 
-  //checks if second argument is appropriate .txt file
+  //checks if second argument in command line is appropriate .txt file
   if (strcmp(argv[1], "file.txt") != 0)
   {
-    printf("Invaled entry!\n");
+    printf("Invaled entry! Please use with file.txt!\n");
     exit(1);
   }
 
@@ -76,7 +76,7 @@ int main(int argc, char *argv[])
 void findMin(int end, int nums[])
 {
 
-  int min = nums[0];
+  int min = nums[0];//declare and initialize min var
 
   for (int i = 0; i < end; i++)
   {
@@ -93,7 +93,7 @@ void findMin(int end, int nums[])
 //function that finds largest number in array and prints number
 void findMax(int end, int nums[])
 {
-  int max = nums[0];
+  int max = nums[0];//declare and initialize max var
 
   for (int i = 0; i < end; i++)
   {
